@@ -73,15 +73,6 @@ For testing menus or configuration without banning anyone:
 You’ll see [DRY RUN] messages in chat and console — no bans are saved or applied.
 
 ---
-
-## 🖼️ Screenshots
-
-(Add screenshots of your GUI menus here)
-Example placeholders:
-
-Ban Menu	Reason Menu
-
----
 	
 ## 🧩 Compatibility
 
@@ -98,7 +89,7 @@ Works fine with LuckPerms or any other permission plugin
 ## 📜 License
 
 MIT License
-(c) 2025 [YourNameHere]
+(c) 2025 [panda-lr]
 
 Feel free to fork, modify, and use this in your own projects.
 
