@@ -76,7 +76,7 @@ You’ll see [DRY RUN] messages in chat and console — no bans are saved or app
 	
 ## 🧩 Compatibility
 
-Minecraft 1.20.x – 1.21.x
+Minecraft 1.21.1 +
 
 Paper / Purpur compatible
 
