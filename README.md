@@ -64,8 +64,6 @@ Expired bans are automatically removed when the player rejoins.
 
 ---
 
-Drop that file into your Paper server’s /plugins folder and restart.
-
 ## 🧪 Testing Mode
 
 For testing menus or configuration without banning anyone:
