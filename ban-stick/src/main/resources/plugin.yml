@@ -1,0 +1,23 @@
+name: BanStick
+main: com.yourname.banstick.BanStickPlugin
+version: 1.1.0
+api-version: "1.21"
+
+commands:
+  banstick:
+    description: Give yourself the Ban Stick
+    usage: /banstick
+    permission: banstick.get
+  banmenu:
+    description: Open ban menu for a player (test mode available)
+    usage: /banmenu <player> | test <player>
+    permission: banstick.use
+
+
+permissions:
+  banstick.get:
+    description: Allows player to get the Ban Stick
+    default: op
+  banstick.use:
+    description: Allows player to use Ban Stick on others
+    default: op
