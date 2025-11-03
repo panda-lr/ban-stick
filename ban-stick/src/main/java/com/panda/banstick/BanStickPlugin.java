@@ -1,4 +1,4 @@
-package com.yourname.banstick;
+package com.panda.banstick;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

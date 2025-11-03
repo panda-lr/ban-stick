@@ -10,8 +10,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -25,6 +28,9 @@ public class BanManager implements Listener {
 
     private File bansFile;
     private YamlConfiguration bansConfig;
+
+    // log file for ALL bans (temp + perm)
+    private File banLogFile;
 
     public BanManager(BanStickPlugin plugin) {
         this.plugin = plugin;
@@ -41,6 +47,7 @@ public class BanManager implements Listener {
     }
 
     public void loadBans() {
+        // temp bans
         bansFile = new File(plugin.getDataFolder(), "bans.yml");
         if (!bansFile.exists()) {
             bansFile.getParentFile().mkdirs();
@@ -52,7 +59,6 @@ public class BanManager implements Listener {
         }
 
         bansConfig = YamlConfiguration.loadConfiguration(bansFile);
-
         tempBans.clear();
 
         if (bansConfig.contains("bans")) {
@@ -61,6 +67,16 @@ public class BanManager implements Listener {
                 long until = bansConfig.getLong("bans." + uuidStr + ".until");
                 String reason = bansConfig.getString("bans." + uuidStr + ".reason", "Banned");
                 tempBans.put(uuid, new BanInfo(until, reason));
+            }
+        }
+
+        // log file
+        banLogFile = new File(plugin.getDataFolder(), "banlog.txt");
+        if (!banLogFile.exists()) {
+            try {
+                banLogFile.createNewFile();
+            } catch (IOException e) {
+                plugin.getLogger().warning("Could not create banlog.txt: " + e.getMessage());
             }
         }
 
@@ -84,18 +100,53 @@ public class BanManager implements Listener {
         }
     }
 
+    // helper to append to banlog.txt
+    private void logBan(String staffName, String targetName, String type, String reason, Long untilMillis) {
+        if (banLogFile == null) return;
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                .withZone(ZoneId.systemDefault());
+        String time = fmt.format(Instant.now());
+
+        String untilStr = (untilMillis == null) ? "-" : fmt.format(Instant.ofEpochMilli(untilMillis));
+
+        String line = String.format(
+                "[%s] staff=%s target=%s type=%s reason=%s until=%s%n",
+                time,
+                staffName,
+                targetName,
+                type,
+                reason,
+                untilStr
+        );
+
+        try (FileWriter fw = new FileWriter(banLogFile, true)) {
+            fw.write(line);
+        } catch (IOException e) {
+            plugin.getLogger().warning("Could not write to banlog.txt: " + e.getMessage());
+        }
+    }
+
     // Create a temp ban
     public void tempBanPlayer(Player target, long durationMillis, String reason, Player staff) {
         long until = System.currentTimeMillis() + durationMillis;
         tempBans.put(target.getUniqueId(), new BanInfo(until, reason));
         saveBans();
 
+        // log
+        logBan(
+                staff != null ? staff.getName() : "CONSOLE",
+                target.getName(),
+                "TEMP",
+                reason,
+                until
+        );
+
         // kick them immediately
         target.kickPlayer(ChatColor.RED + "You are temporarily banned.\n"
                 + ChatColor.GRAY + "Reason: " + reason + "\n"
                 + ChatColor.GRAY + "Until: " + Instant.ofEpochMilli(until));
 
-        Bukkit.getLogger().info(staff.getName() + " temp-banned " + target.getName()
+        Bukkit.getLogger().info((staff != null ? staff.getName() : "CONSOLE") + " temp-banned " + target.getName()
                 + " until " + until + " for: " + reason);
     }
 
@@ -105,13 +156,22 @@ public class BanManager implements Listener {
                 target.getName(),
                 reason,
                 null, // no expiry = perm
-                staff.getName()
+                staff != null ? staff.getName() : "CONSOLE"
+        );
+
+        // log
+        logBan(
+                staff != null ? staff.getName() : "CONSOLE",
+                target.getName(),
+                "PERM",
+                reason,
+                null
         );
 
         target.kickPlayer(ChatColor.DARK_RED + "You are permanently banned.\n"
                 + ChatColor.GRAY + "Reason: " + reason);
 
-        Bukkit.getLogger().info(staff.getName() + " perm-banned " + target.getName()
+        Bukkit.getLogger().info((staff != null ? staff.getName() : "CONSOLE") + " perm-banned " + target.getName()
                 + " for: " + reason);
     }
 
@@ -131,7 +191,6 @@ public class BanManager implements Listener {
             return;
         }
 
-        // still banned
         event.disallow(
                 PlayerLoginEvent.Result.KICK_BANNED,
                 ChatColor.RED + "You are temporarily banned.\n"
