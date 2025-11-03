@@ -97,6 +97,36 @@ Works fine with LuckPerms or any other permission plugin
 
 ---
 
+## 🧱 Building from Source
+
+**Requirements:**
+- Java 17+  
+- Maven 3.8+  
+
+**Steps:**
+```bash
+git clone https://github.com/panda-lr/ban-stick.git
+cd ban-stick
+mvn package
+
+The compiled plugin will appear at:
+
+target/banstick-1.0.0.jar
+
+Drop it into your Paper server’s /plugins folder and restart.
+
+---
+
+❤️ Credits
+
+This project was inspired by the original Ban Stick (SpigotMC)
+
+by HuganicFirtic, created for older Minecraft versions.
+This plugin is a modern re-imagining built from scratch for Paper 1.20+
+with new GUI menus, temp bans, logging, and instant lightning smites.
+
+---
+
 ## 📜 License
 
 MIT License
