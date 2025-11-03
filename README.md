@@ -5,7 +5,7 @@
 Right-click a player with the **Ban Stick**, or use `/banmenu`, to open a full GUI menu for choosing a duration and reason —  
 or simply **left-click** to instantly smite them with lightning and a permanent ban.
 
-No need to type long commands ever again — it’s fast, visual, and fun.
+No need to type long commands ever again — it's fast, visual, and fun.
 
 ---
 
@@ -45,7 +45,7 @@ No need to type long commands ever again — it’s fast, visual, and fun.
 
 ## 🧠 How to Use
 
-1. Make sure you’re OP or have the required permissions.  
+1. Make sure you're OP or have the required permissions.  
 2. Run `/banstick` to get your Ban Stick (a Blaze Rod).  
 3. **Right-click** a player → opens the Ban Menu GUI.  
 4. Choose a duration and reason to confirm.  
@@ -69,9 +69,13 @@ Expired temp bans are automatically removed when the player rejoins.
 
 For testing menus or configuration without banning anyone:
 
+```bash
 /banmenu test <yourname>
+```
 
-You’ll see [DRY RUN] messages in chat and console — no bans are saved or applied.
+You'll see [DRY RUN] messages in chat and console — no bans are saved or applied.
+
+---
 
 ## ⚡ Instant Lightning Ban
 
@@ -87,13 +91,10 @@ All lightning bans are also written to `banlog.txt`.
 
 ## 🧩 Compatibility
 
-Minecraft 1.20.x – 1.21.x
-
-Paper / Purpur compatible
-
-No external dependencies
-
-Works fine with LuckPerms or any other permission plugin
+- Minecraft 1.20.x – 1.21.x
+- Paper / Purpur compatible
+- No external dependencies
+- Works fine with LuckPerms or any other permission plugin
 
 ---
 
@@ -108,30 +109,27 @@ Works fine with LuckPerms or any other permission plugin
 git clone https://github.com/panda-lr/ban-stick.git
 cd ban-stick
 mvn package
+```
 
 The compiled plugin will appear at:
 
+```
 target/banstick-1.0.0.jar
+```
 
-Drop it into your Paper server’s /plugins folder and restart.
+Drop it into your Paper server's `/plugins` folder and restart.
 
 ---
 
-❤️ Credits
+## ❤️ Credits
 
-This project was inspired by the original Ban Stick (SpigotMC)
-
-by HuganicFirtic, created for older Minecraft versions.
-This plugin is a modern re-imagining built from scratch for Paper 1.20+
-with new GUI menus, temp bans, logging, and instant lightning smites.
+This project was inspired by the original Ban Stick (SpigotMC) by HuganicFirtic, created for older Minecraft versions. This plugin is a modern re-imagining built from scratch for Paper 1.20+ with new GUI menus, temp bans, logging, and instant lightning smites.
 
 ---
 
 ## 📜 License
 
-MIT License
+MIT License  
 (c) 2025 [panda-lr]
 
 Feel free to fork, modify, and use this in your own projects.
-
----
